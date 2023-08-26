@@ -6,7 +6,10 @@ wordDic = ["hello", "umbrella", "dictionary", "words", "guessing", "hangman"]
 play = True
 
 chosenWord = random.choice(wordDic)
+lenWord = len(chosenWord)
 numWrong = 0
+guessedLetters = []
+status = ""
 
 while(play):
     
@@ -58,15 +61,7 @@ while(play):
         print("   |  |   ")
         print("      |   ")
         print("   _______")
-    elif numWrong == 5:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("  /|\ |   ")
-        print("   |  |   ")
-        print("      |   ")
-        print("   _______")
-    elif numWrong == 5:
+    elif numWrong == 6:
         print("   ___    ")
         print("   |  |   ")
         print("   0  |   ")
@@ -74,7 +69,7 @@ while(play):
         print("   |  |   ")
         print("  /   |   ")
         print("   _______")
-    elif numWrong == 5:
+    elif numWrong == 7:
         print("   ___    ")
         print("   |  |   ")
         print("   0  |   ")
@@ -85,15 +80,24 @@ while(play):
 
 
     for char in chosenWord:
-        print("_", end=" ")
+        status += ("_ ")
+    print(status)
 
     guess = input("Choose a letter: ")
-    if guess not in chosenWord:
-        print("that's incorrect")
-        numWrong += 1
-    else:
-        print("good work!")
+
     
+    if guess in guessedLetters:
+        print("you've already used this letter, try again")
+    elif guess not in chosenWord:
+        print("that's incorrect")
+        guessedLetters.append(guess)
+        numWrong +=1
+    elif guess in chosenWord:
+        guessedLetters.append(guess)
+        print("correct!")
 
+        
 
-    play = False
+    if numWrong == 8:
+        print("game over")
+        play = False
