@@ -2,6 +2,77 @@ import random
 ##new hangman game
 ##create a dictionary of words that the game chooses at random
 
+# Function to display the hangman
+def display_hangman(numWrong):
+    stages = [
+        """
+           ___
+          |   |
+              |
+              |
+              |
+              |
+        _______
+        """,
+        """
+           ___
+          |   |
+          O   |
+              |
+              |
+              |
+        _______
+        """,
+        """
+           ___
+          |   |
+          O   |
+          |   |
+              |
+              |
+        _______
+        """,
+        """
+           ___
+          |   |
+          O   |
+         /|   |
+              |
+              |
+        _______
+        """,
+        """
+           ___
+          |   |
+          O   |
+         /|\\  |
+              |
+              |
+        _______
+        """,
+        """
+           ___
+          |   |
+          O   |
+         /|\\  |
+         /    |
+              |
+        _______
+        """,
+        """
+           ___
+          |   |
+          O   |
+         /|\\  |
+         / \\  |
+              |
+        _______
+        """
+    ]
+
+    return stages[numWrong]
+
+
 wordDic = ["hello", "umbrella", "dictionary", "words", "guessing", "hangman"]
 play = True
 
@@ -9,81 +80,14 @@ chosenWord = random.choice(wordDic)
 lenWord = len(chosenWord)
 numWrong = 0
 guessedLetters = []
-status = ""
+status = ["_"]*lenWord
 
 while(play):
     
-    if numWrong == 0:
-        print("   ___    ")
-        print("   |  |   ")
-        print("      |   ")
-        print("      |   ")
-        print("      |   ")
-        print("      |   ")
-        print("   _______")
-    elif numWrong == 1:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("      |   ")
-        print("      |   ")
-        print("      |   ")
-        print("   _______")
-    elif numWrong == 2:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("    \ |   ")
-        print("      |   ")
-        print("      |   ")
-        print("   _______")
-    elif numWrong == 3:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("  / \ |   ")
-        print("      |   ")
-        print("      |   ")
-        print("   _______")
-    elif numWrong == 4:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("  /|\ |   ")
-        print("      |   ")
-        print("      |   ")
-        print("   _______")
-    elif numWrong == 5:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("  /|\ |   ")
-        print("   |  |   ")
-        print("      |   ")
-        print("   _______")
-    elif numWrong == 6:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("  /|\ |   ")
-        print("   |  |   ")
-        print("  /   |   ")
-        print("   _______")
-    elif numWrong == 7:
-        print("   ___    ")
-        print("   |  |   ")
-        print("   0  |   ")
-        print("  /|\ |   ")
-        print("   |  |   ")
-        print("  / \ |   ")
-        print("   _______")
+    print(display_hangman(numWrong))
+    print(" ".join(status))
 
-
-    for char in chosenWord:
-        status += ("_ ")
-    print(status)
-
-    guess = input("Choose a letter: ")
+    guess = input("Choose a letter: ").lower()
 
     
     if guess in guessedLetters:
@@ -92,12 +96,17 @@ while(play):
         print("that's incorrect")
         guessedLetters.append(guess)
         numWrong +=1
-    elif guess in chosenWord:
+    else:
         guessedLetters.append(guess)
+        for i in range(lenWord):
+            if chosenWord[i] == guess:
+                status[i] = guess
         print("correct!")
 
-        
-
-    if numWrong == 8:
-        print("game over")
+    if numWrong == 7: 
+        print("gameover. the correct word was", chosenWord)   
+        play = False
+    
+    if "_" not in status:
+        print("you've won!!")
         play = False
